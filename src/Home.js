@@ -28,6 +28,7 @@ const Home = () => {
             <button onClick={(e) => {handleClickAgain('jacek', e)}}>Click me againg!</button>
             <br></br>
             <BlogList blogs={blogs} title="All posts"/>
+            <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario posts"/>
         </div>   
      );
 }
