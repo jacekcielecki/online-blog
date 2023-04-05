@@ -2,6 +2,7 @@ import Navbar from './Navbar';
 import Home from './Home';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Create from './Create';
+import BlogDetails from './BlogDetails';
 
 function App() {
   // const title = 'Welcome to my blog!';
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/create" element={<Create />}></Route>
+            <Route path="/blogs/:id" element={<BlogDetails />}></Route>
           </Routes>
           {/* <h1>{ title }</h1>
           <p>Liked { likes } times</p>
