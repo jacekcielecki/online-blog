@@ -7,6 +7,7 @@ const Home = () => {
     const [age, setAge] = useState(25);
     const [blogs, setBlogs] = useState(null);
     const [isPending, setIsPending] = useState(true);
+    const [error, setError] = useState(null);
     // const [blogs, setBlogs] = useState([
     //     { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1},
     //     { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2},
@@ -26,14 +27,23 @@ const Home = () => {
     useEffect(() => {
         setTimeout(() => {
             fetch('http://localhost:8000/blogs')
-            .then(res => {
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data);
-                setBlogs(data);
-                setIsPending(false);
-            })
+                .then(res => {
+                    if(!res.ok){
+                        throw Error('could not fetch the data from db');
+                    }
+                    return res.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    setBlogs(data);
+                    setIsPending(false);
+                    setError(null);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                    setError(err.message);
+                    setIsPending(false);
+                })
         }, 1000)//delay fetch data for 1 sec in order to demonstrate loading screen
     }, []);
 
@@ -57,6 +67,7 @@ const Home = () => {
             <br></br>
             {/* handleDelete={handleDelete} */}
             {isPending && <div style={{color: '#fc0303', fontSize: 60}}>Loading...</div>}
+            {error && <div style={{color: '#fc0303', fontSize: 60}}>Error: {error}</div>}
             {blogs && <BlogList blogs={blogs} title="All posts"/>}
             {blogs && <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario posts"/>}
             <button onClick={() => setName('jacekChange')}>Change name</button>
