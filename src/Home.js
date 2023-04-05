@@ -6,6 +6,7 @@ const Home = () => {
     const [name, setName] = useState('mario'); //mario - inital value
     const [age, setAge] = useState(25);
     const [blogs, setBlogs] = useState(null);
+    const [isPending, setIsPending] = useState(true);
     // const [blogs, setBlogs] = useState([
     //     { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1},
     //     { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2},
@@ -23,14 +24,17 @@ const Home = () => {
     // }
 
     useEffect(() => {
-        fetch('http://localhost:8000/blogs')
-        .then(res => {
-            return res.json();
-        })
-        .then((data) => {
-            console.log(data);
-            setBlogs(data);
-        })
+        setTimeout(() => {
+            fetch('http://localhost:8000/blogs')
+            .then(res => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data);
+                setBlogs(data);
+                setIsPending(false);
+            })
+        }, 1000)//delay fetch data for 1 sec in order to demonstrate loading screen
     }, []);
 
     // useEffect runs function every render of the component
@@ -52,6 +56,7 @@ const Home = () => {
             <button onClick={(e) => {handleClickAgain('jacek', e)}}>Click me againg!</button>
             <br></br>
             {/* handleDelete={handleDelete} */}
+            {isPending && <div style={{color: '#fc0303', fontSize: 60}}>Loading...</div>}
             {blogs && <BlogList blogs={blogs} title="All posts"/>}
             {blogs && <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario posts"/>}
             <button onClick={() => setName('jacekChange')}>Change name</button>
