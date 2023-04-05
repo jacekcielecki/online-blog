@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BlogList from "./BlogList";
 
 const Home = () => {
-    const [name, setName] = useState('mario');
+    //rerender the dom every time value changes
+    const [name, setName] = useState('mario'); //mario - inital value
     const [age, setAge] = useState(25);
     const [blogs, setBlogs] = useState([
         { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1},
@@ -20,6 +21,12 @@ const Home = () => {
         setBlogs(newBlogs);
     }
 
+    // useEffect runs function every render of the component
+    useEffect(() => {
+        console.log('use effect ran');
+        console.log(name);
+    }, [name]); //useEffect Dependency - if given useEffect will run on first render + on change to given variable
+
     // e - event object
     const handleClickAgain = (name, e) => {
         console.log('hello ' + name, e.target)    
@@ -34,6 +41,8 @@ const Home = () => {
             <br></br>
             <BlogList blogs={blogs} title="All posts" handleDelete={handleDelete}/>
             <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario posts" handleDelete={handleDelete}/>
+            <button onClick={() => setName('jacekChange')}>Change name</button>
+            <p>{ name }</p>
         </div>   
      );
 }
