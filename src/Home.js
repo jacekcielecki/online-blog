@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import BlogList from "./BlogList";
+import useFetch from "./useFetch";
 
 const Home = () => {
     //rerender the dom every time value changes
+    const { data: blogs, isPending, error } = useFetch('http://localhost:8000/blogs');
     const [name, setName] = useState('mario'); //mario - inital value
     const [age, setAge] = useState(25);
-    const [blogs, setBlogs] = useState(null);
-    const [isPending, setIsPending] = useState(true);
-    const [error, setError] = useState(null);
     // const [blogs, setBlogs] = useState([
     //     { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1},
     //     { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2},
@@ -23,29 +22,6 @@ const Home = () => {
     //     const newBlogs = blogs.filter(blog => blog.id !== id);
     //     setBlogs(newBlogs);
     // }
-
-    useEffect(() => {
-        setTimeout(() => {
-            fetch('http://localhost:8000/blogs')
-                .then(res => {
-                    if(!res.ok){
-                        throw Error('could not fetch the data from db');
-                    }
-                    return res.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    setBlogs(data);
-                    setIsPending(false);
-                    setError(null);
-                })
-                .catch(err => {
-                    console.log(err.message);
-                    setError(err.message);
-                    setIsPending(false);
-                })
-        }, 1000)//delay fetch data for 1 sec in order to demonstrate loading screen
-    }, []);
 
     // useEffect runs function every render of the component
     // useEffect(() => {
