@@ -5,10 +5,16 @@ const Create = () => {
     const [body, setBody] = useState('');
     const [author, setAuthor] = useState('');
 
+    const handleSubmit = (e) => {
+         e.preventDefault(); //disable default page refresh
+         const blog = { title, body, author };
+         console.log(blog);
+    };
+
     return (
         <div className="create">
             <h2>Add a new post</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>Post title:</label>
                 <input
                     type="text"
